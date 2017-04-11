@@ -1,12 +1,13 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import { Router, Redirect, Route, browserHistory } from 'react-router'
+import React from 'react'
+import ReactDOM from 'react-dom'
+
 import App from './components/App';
 import './index.css';
-import {Router, Route} from 'react-router';
 
-import MainApp from './components/MainApp';
+import MusicApp from './components/MusicApp';
 
 ReactDOM.render(
-  <MainApp />,
+  <MusicApp />,
   document.getElementById('root')
 );
