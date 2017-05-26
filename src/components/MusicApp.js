@@ -8,7 +8,8 @@ class MusicApp extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            searchText:''
+            searchText:'',
+            downloadLinks: null
 
         }
         this.searchButtonClick = this.searchButtonClick.bind(this);
@@ -18,39 +19,15 @@ class MusicApp extends Component {
 
 
     searchButtonClick() {
-        var youtubeLink='https://www.youtube.com/watch?v=IxGvm6btP1A'
-        var downloadLink = "http://youtubeconverter.me/downloadz/index.php?output=yt/IxGvm6btP1A/64~~256~~Kanye_West_-_Fade_Explicit_uuid-58ec534cc8442.mp3"
+        const backendLink = 'http://localhost:5000/api/v1/youtubelinks?q=' + this.state.searchText
+        console.log(backendLink)
 
-        var api_call = axios.get('http://youtubeconverter.me/downloadz/?url=' + youtubeLink + '&amp;ftype=mp3&amp;quality=320')
-        api_call.then((data) => {
-            var htmlData = data['data']
-            //console.log(htmlData)
-            var dlloca =  htmlData.lastIndexOf("showConversionResult")
-
-            var dl = htmlData.substring(dlloca ,dlloca + 150)
-
-           // var dllocaStart =  dl.indexOf("showConversionResult")
-            
-            
-            console.log(dl)
-        //    // console.log("start - ",dllocaStart)
-        //     console.log("end - ",dlloca)
-
-        //     var URL = dl.substring(9,dllocaStart - 1 )
-
-        //     console.log("first" , URL)
-        //     var dllocaStart2 =  URL.lastIndexOf("=")
-        //     URL = URL.substring(0,dllocaStart2 + 1 )
-
-        //     var mp3URL = URL.substring(0, URL.length ) + "mp3"
-        //     var mp3URL = URL.substring(0, URL.length ) + "mp3"
-        //     var mp3URL = URL.substring(0, URL.length ) + "mp3"
-
-        //     console.log("sec URL" , URL)
-        //     console.log("mp3URL" , mp3URL)
-
-            var downloadURL =  "http://youtubeconverter.me/downloadz/index.php?output="
-
+        var api_call = axios.get(backendLink)
+        api_call.then((data) => {   
+            console.log(data)
+            this.setState({
+                downloadLinks: data['data']
+            })
 
         
             
@@ -65,20 +42,40 @@ class MusicApp extends Component {
     }
 
     render() {
+        let downloadLinksJSX = null
+        /*if(this.state.downloadLinks != null){
+            downloadLinksJSX = this.state.downloadLinks.map((e)=>{
+                <div>
+                    <h1>e.title</h1>
+                    <h2>e.downloadLink</h2>
+                </div>
+            })[0]
+        }*/
+
+        if(this.state.downloadLinks != null){
+               downloadLinksJSX =  (<div>
+                    <h1>{this.state.downloadLinks[0].title}</h1>
+                    <Button href={this.state.downloadLinks[0].downloadLink} bsStyle='success' style ={{width:'200px',height:'50px'}}>
+                        Download
+                    </Button >
+                </div>)
+        }
+
 
         var formJsx = (
             <form>
-                <FormGroup bsSize="large">
-                    <FormControl ref={(refVar) => this.searchRef = refVar} type="text" style={{width:"400px",height:"30px"}} placeholder="Enter song info" onChange={()=>{this.onChangeText()}}/>
+                <FormGroup  bsSize="large">
+                    <FormControl ref={(refVar) => this.searchRef = refVar} type="text" style={{'text-align':'center',width:"400px",height:"50px",display:'inline'}} placeholder="Enter song info" onChange={()=>{this.onChangeText()}}/>
                 </FormGroup>
             </form>)
 
 
         return (
-            <div className="App">
+            <div>
                 <h1> Welcome to EasyMusic</h1>
                 {formJsx}
-                <Button style={{'marginTop':"15px",width:"180px",height:"30px"}} bsStyle="primary" bsSize="large" onClick={()=>{this.searchButtonClick()}}>Search</Button>
+                <Button style={{'marginTop':"15px",width:"180px",height:"50px"}} bsStyle="primary" bsSize="large" onClick={()=>{this.searchButtonClick()}}>Search</Button>
+                {downloadLinksJSX}
             </div>
         );
     }
