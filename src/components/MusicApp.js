@@ -53,12 +53,21 @@ class MusicApp extends Component {
         }*/
 
         if(this.state.downloadLinks != null){
-               downloadLinksJSX =  (<div>
+             downloadLinksJSX = this.state.downloadLinks.map((e)=>{
+                return (<div>
+                    <h1>{e.title}</h1>
+                    <Button href={e.downloadLink} bsStyle='success' style ={{width:'200px',height:'50px'}}>
+                        Download
+                    </Button >
+                </div>)
+             })
+
+               /*downloadLinksJSX =  (<div>
                     <h1>{this.state.downloadLinks[0].title}</h1>
                     <Button href={this.state.downloadLinks[0].downloadLink} bsStyle='success' style ={{width:'200px',height:'50px'}}>
                         Download
                     </Button >
-                </div>)
+                </div>)*/
         }
 
 
