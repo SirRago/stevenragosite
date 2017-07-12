@@ -16,6 +16,13 @@
     <title>React App</title>
   </head>
   <body>
+    <script src="https://connect.soundcloud.com/sdk/sdk-3.1.2.js"></script>
+    <script>
+      SC.initialize({
+        client_id: 'YOUR_CLIENT_ID',
+        redirect_uri: 'http://example.com/callback'
+      });
+    </script>
     <div id="root"></div>
     <!--
       This HTML file is a template.

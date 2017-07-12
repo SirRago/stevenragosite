@@ -7,8 +7,8 @@ class Header extends Component {
   render() {
     return (
       <div className="App">
-          <div>
-              Header
+          <div className='header'>
+              <b>eaZyMusic</b>
           </div>
         <div>
           {this.props.children}
